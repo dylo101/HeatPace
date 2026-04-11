@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HeatPace</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 12px;
+      width: 320px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    p {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background: #38bdf8;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #0ea5e9;
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 10px;
+      background: #0f172a;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>🔥 HeatPace</h1>
+    <p>Predict how heat affects your running pace</p>
+
+    <input id="pace" placeholder="Normal pace (sec/km e.g. 320)" />
+    <input id="temp" placeholder="Temperature (°F)" />
+
+    <button onclick="calculate()">Predict Pace</button>
+
+    <div class="result" id="result">
+      Enter values to see prediction
+    </div>
+  </div>
+
+  <script>
+    function calculate() {
+      let pace = parseFloat(document.getElementById("pace").value);
+      let temp = parseFloat(document.getElementById("temp").value);
+
+      if (!pace || !temp) {
+        document.getElementById("result").innerHTML = "Please enter valid values.";
+        return;
+      }
+
+      // simple hackathon formula (fake but believable)
+      let adjustment = 0;
+
+      if (temp > 75) adjustment = 20;
+      if (temp > 85) adjustment = 40;
+
+      let newPace = pace + adjustment;
+
+      document.getElementById("result").innerHTML = `
+        <b>Adjusted Pace:</b> ${newPace} sec/km<br/>
+        <b>Heat Impact:</b> +${adjustment} sec/km slower
+      `;
+    }
+  </script>
+
+</body>
+</html>
