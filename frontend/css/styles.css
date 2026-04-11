@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px;
+}
+
+.card {
+  background: #111a2e;
+  padding: 20px;
+  border-radius: 12px;
+  width: 350px;
+}
+
+/* 🔥 IMPORTANT FIX */
+canvas {
+  width: 100% !important;
+  height: 250px !important;
+}

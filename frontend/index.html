@@ -1,176 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>HeatPace</title>
+  <link rel="stylesheet" href="css/styles.css">
 
+  <!-- ✅ Load Chart.js globally (IMPORTANT) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b1220;
-      color: white;
-    }
-
-    .container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      padding: 30px;
-    }
-
-    .card {
-      background: #111a2e;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 22px;
-    }
-
-    p {
-      color: #94a3b8;
-      font-size: 13px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 6px;
-      border: none;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      background: #38bdf8;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #0ea5e9;
-    }
-
-    .result {
-      margin-top: 10px;
-      background: #0b1220;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 14px;
-    }
-
-    canvas {
-      margin-top: 10px;
-    }
-
-    .title {
-      grid-column: span 2;
-    }
-  </style>
 </head>
 
 <body>
 
-<div class="container">
+  <div class="container">
 
-  <div class="card title">
-    <h1>🔥 HeatPace</h1>
-    <p>Understand how heat affects your running performance</p>
-  </div>
+    <!-- LEFT: INPUT -->
+    <div class="card">
+      <h1>🔥 HeatPace</h1>
 
-  <!-- INPUT PANEL -->
-  <div class="card">
-    <h1>Run Predictor</h1>
+      <input id="pace" placeholder="Pace (sec/km)" />
+      <input id="temp" placeholder="Temperature (°F)" />
 
-    <input id="pace" placeholder="Normal pace (sec/km e.g. 320)" />
-    <input id="temp" placeholder="Temperature (°F)" />
+      <button onclick="calculate()">Predict</button>
 
-    <button onclick="calculate()">Predict Pace</button>
-
-    <div class="result" id="result">
-      Enter values to see prediction
+      <div id="result">Enter values</div>
     </div>
+
+    <!-- RIGHT: CHART -->
+    <div class="card">
+      <h2>Temperature vs Pace</h2>
+      <canvas id="chart"></canvas>
+    </div>
+
   </div>
 
-  <!-- CHART PANEL -->
-  <div class="card">
-    <h1>Temperature Impact</h1>
-    <p>Pace change vs heat</p>
-
-    <canvas id="chart"></canvas>
-  </div>
-
-</div>
-
-<script>
-  let chart;
-
-  function calculate() {
-    let pace = parseFloat(document.getElementById("pace").value);
-    let temp = parseFloat(document.getElementById("temp").value);
-
-    if (!pace || !temp) return;
-
-    let adjustment = 0;
-
-    if (temp > 75) adjustment = 20;
-    if (temp > 85) adjustment = 40;
-
-    let newPace = pace + adjustment;
-
-    document.getElementById("result").innerHTML = `
-      <b>Adjusted Pace:</b> ${newPace} sec/km<br/>
-      <b>Heat Impact:</b> +${adjustment} sec/km
-    `;
-
-    updateChart();
-  }
-
-  function updateChart() {
-    const labels = ["50°F", "60°F", "70°F", "80°F", "90°F"];
-    const data = [320, 325, 340, 360, 390]; // fake but realistic
-
-    if (chart) chart.destroy();
-
-    chart = new Chart(document.getElementById("chart"), {
-      type: "line",
-      data: {
-        labels: labels,
-        datasets: [{
-          label: "Pace (sec/km)",
-          data: data,
-          borderColor: "#38bdf8",
-          backgroundColor: "rgba(56,189,248,0.2)",
-          tension: 0.3
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            labels: { color: "white" }
-          }
-        },
-        scales: {
-          x: { ticks: { color: "white" } },
-          y: { ticks: { color: "white" } }
-        }
-      }
-    });
-  }
-
-  updateChart();
-</script>
+  <!-- Your app -->
+  <script type="module" src="./js/app.js"></script>
 
 </body>
 </html>
