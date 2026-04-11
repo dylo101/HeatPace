@@ -5,35 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>HeatPace</title>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
       margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1220;
+      color: white;
     }
 
     .container {
-      background: #1e293b;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
       padding: 30px;
+    }
+
+    .card {
+      background: #111a2e;
+      padding: 20px;
       border-radius: 12px;
-      width: 320px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     }
 
     h1 {
-      margin-bottom: 10px;
-      font-size: 24px;
+      margin: 0;
+      font-size: 22px;
     }
 
     p {
-      font-size: 12px;
       color: #94a3b8;
-      margin-bottom: 20px;
+      font-size: 13px;
     }
 
     input {
@@ -42,18 +45,16 @@
       margin: 8px 0;
       border-radius: 6px;
       border: none;
-      outline: none;
     }
 
     button {
       width: 100%;
       padding: 10px;
-      margin-top: 10px;
       background: #38bdf8;
       border: none;
       border-radius: 6px;
-      cursor: pointer;
       font-weight: bold;
+      cursor: pointer;
     }
 
     button:hover {
@@ -61,21 +62,35 @@
     }
 
     .result {
-      margin-top: 15px;
+      margin-top: 10px;
+      background: #0b1220;
       padding: 10px;
-      background: #0f172a;
       border-radius: 8px;
       font-size: 14px;
     }
 
+    canvas {
+      margin-top: 10px;
+    }
+
+    .title {
+      grid-column: span 2;
+    }
   </style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
+
+  <div class="card title">
     <h1>🔥 HeatPace</h1>
-    <p>Predict how heat affects your running pace</p>
+    <p>Understand how heat affects your running performance</p>
+  </div>
+
+  <!-- INPUT PANEL -->
+  <div class="card">
+    <h1>Run Predictor</h1>
 
     <input id="pace" placeholder="Normal pace (sec/km e.g. 320)" />
     <input id="temp" placeholder="Temperature (°F)" />
@@ -87,30 +102,75 @@
     </div>
   </div>
 
-  <script>
-    function calculate() {
-      let pace = parseFloat(document.getElementById("pace").value);
-      let temp = parseFloat(document.getElementById("temp").value);
+  <!-- CHART PANEL -->
+  <div class="card">
+    <h1>Temperature Impact</h1>
+    <p>Pace change vs heat</p>
 
-      if (!pace || !temp) {
-        document.getElementById("result").innerHTML = "Please enter valid values.";
-        return;
+    <canvas id="chart"></canvas>
+  </div>
+
+</div>
+
+<script>
+  let chart;
+
+  function calculate() {
+    let pace = parseFloat(document.getElementById("pace").value);
+    let temp = parseFloat(document.getElementById("temp").value);
+
+    if (!pace || !temp) return;
+
+    let adjustment = 0;
+
+    if (temp > 75) adjustment = 20;
+    if (temp > 85) adjustment = 40;
+
+    let newPace = pace + adjustment;
+
+    document.getElementById("result").innerHTML = `
+      <b>Adjusted Pace:</b> ${newPace} sec/km<br/>
+      <b>Heat Impact:</b> +${adjustment} sec/km
+    `;
+
+    updateChart();
+  }
+
+  function updateChart() {
+    const labels = ["50°F", "60°F", "70°F", "80°F", "90°F"];
+    const data = [320, 325, 340, 360, 390]; // fake but realistic
+
+    if (chart) chart.destroy();
+
+    chart = new Chart(document.getElementById("chart"), {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Pace (sec/km)",
+          data: data,
+          borderColor: "#38bdf8",
+          backgroundColor: "rgba(56,189,248,0.2)",
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: { color: "white" }
+          }
+        },
+        scales: {
+          x: { ticks: { color: "white" } },
+          y: { ticks: { color: "white" } }
+        }
       }
+    });
+  }
 
-      // simple hackathon formula (fake but believable)
-      let adjustment = 0;
-
-      if (temp > 75) adjustment = 20;
-      if (temp > 85) adjustment = 40;
-
-      let newPace = pace + adjustment;
-
-      document.getElementById("result").innerHTML = `
-        <b>Adjusted Pace:</b> ${newPace} sec/km<br/>
-        <b>Heat Impact:</b> +${adjustment} sec/km slower
-      `;
-    }
-  </script>
+  updateChart();
+</script>
 
 </body>
 </html>
