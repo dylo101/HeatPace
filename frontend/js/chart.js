@@ -1,5 +1,14 @@
 let chartInstance = null;
 
+function formatPace(seconds) {
+  const min = Math.floor(seconds / 60);
+  const sec = Math.round(seconds % 60)
+    .toString()
+    .padStart(2, "0");
+
+  return `${min}:${sec}`;
+}
+
 export function renderChart(data) {
   const canvas = document.getElementById("chart");
   if (!canvas) return;
@@ -52,11 +61,14 @@ export function renderChart(data) {
         y: {
           title: {
             display: true,
-            text: "Pace (sec/km)",
+            text: "Pace (min/mile)",
             color: "white"
           },
           ticks: {
-            color: "white"
+            color: "white",
+            callback: function(value) {
+                return formatPace(value);
+            }
           }
         }
       }
