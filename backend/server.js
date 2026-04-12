@@ -10,6 +10,7 @@ app.use(express.json());
 
 const CLIENT_ID = process.env.STRAVA_CLIENT_ID;
 const CLIENT_SECRET = process.env.STRAVA_CLIENT_SECRET;
+console.log("CLIENT_ID:", CLIENT_ID);
 const REDIRECT_URI = "https://heatpace.onrender.com/exchange_token";
 
 app.get("/auth", (req, res) => {
@@ -19,12 +20,14 @@ app.get("/auth", (req, res) => {
     `&response_type=code` +
     `&redirect_uri=${REDIRECT_URI}` +
     `&scope=activity:read`;
-
+  console.log("STRAVA AUTH URL:", url);
   res.redirect(url);
 });
 
 app.get("/exchange_token", async (req, res) => {
   const code = req.query.code;
+  console.log("OAuth callback hit");
+  console.log("Code received:", code);
 
   const response = await fetch("https://www.strava.com/oauth/token", {
     method: "POST",
