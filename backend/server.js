@@ -6,10 +6,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔑 YOU WILL FILL THESE
 const CLIENT_ID = "223733";
 const CLIENT_SECRET = "82af787fe26c39d180e331d4425a8a0cfc40f694";
-const REDIRECT_URI = "https://heatpace.onrender.com";
+const REDIRECT_URI = "https://heatpace.onrender.com/exchange_token";
 
 app.get("/auth", (req, res) => {
   const url =
@@ -38,8 +37,8 @@ app.get("/exchange_token", async (req, res) => {
 
   const data = await response.json();
 
-  // redirect back to frontend with token
-  res.redirect(`http://localhost:3000?token=${data.access_token}`);
+  // redirect back to Netlify frontend
+  res.redirect(`https://heatpace.netlify.app/?token=${data.access_token}`);
 });
 
 app.get("/activities", async (req, res) => {
@@ -79,6 +78,7 @@ app.get("/weather", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3001;
+
 app.listen(PORT, () => {
-  console.log("Serving running on ${PORT}");
+  console.log(`Server running on ${PORT}`);
 });
