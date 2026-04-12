@@ -1,10 +1,8 @@
-// MOCK Strava integration layer
-// (we will replace with real API later)
+
 
 export async function getStravaRuns() {
   console.log("Fetching Strava runs...");
 
-  // simulate API delay
   await new Promise(res => setTimeout(res, 500));
 
   return [

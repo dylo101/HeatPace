@@ -42,7 +42,6 @@ app.get("/exchange_token", async (req, res) => {
 
   const data = await response.json();
 
-  // redirect back to Netlify frontend
   res.redirect(`https://heatpace.netlify.app/?token=${data.access_token}`);
 });
 

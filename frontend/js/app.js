@@ -22,7 +22,7 @@ function calculateHeatSensitivity(runs) {
 
   const diffPer10F = ((avgHot - avgCool) / 15) * 10;
 
-  return diffPer10F; // sec per mile per +10°F
+  return diffPer10F; // sec per mile per +10F
 }
 
 function getRunnerType(sensitivity) {
@@ -35,7 +35,6 @@ function getRunnerType(sensitivity) {
 
 
 function parsePace(paceStr) {
-  // format mm:ss
   if (paceStr.includes(":")) {
     const parts = paceStr.split(":");
     const min = parseInt(parts[0]);
@@ -44,7 +43,7 @@ function parsePace(paceStr) {
     return min * 60 + sec;
   }
 
-  // fallback if user enters decimal like 8.5
+  //fallback if user enters decimal like 8.5
   return parseFloat(paceStr) * 60;
 }
 
@@ -67,7 +66,7 @@ async function getTemperature(lat, lon) {
   console.log("Weather response:", data);
 
   if (!data.main || !data.main.temp) {
-    return 70; // safe fallback
+    return 70; //fallback
   }
 
   return data.main.temp;
@@ -135,7 +134,7 @@ async function getStravaRuns() {
 
   console.log("Raw Strava activities:", activities);
 
-  // Convert Strava activities → your run format
+  //strava conversion
   
   const runs = [];
 

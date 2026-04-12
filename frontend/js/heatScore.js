@@ -12,5 +12,5 @@ export function heatLabel(score) {
   if (score <= 4) return "Good Conditions";
   if (score <= 7) return "Moderate Heat Impact";
   if (score <= 9) return "Hard Conditions";
-  return "Extreme Heat – Slow Down";
+  return "Extreme Heat - Slow Down";
 }

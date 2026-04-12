@@ -1,15 +1,9 @@
-/* =========================
-   GLOBAL RESET
-========================= */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* =========================
-   BODY
-========================= */
 body {
   font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #c67417, #bf1c1c);
@@ -17,9 +11,6 @@ body {
   min-height: 100vh;
 }
 
-/* =========================
-   LAYOUT
-========================= */
 .container {
   display: flex;
   gap: 20px;
@@ -27,16 +18,12 @@ body {
   align-items: flex-start;
 }
 
-/* Stack on mobile */
 @media (max-width: 900px) {
   .container {
     flex-direction: column;
   }
 }
 
-/* =========================
-   CARDS
-========================= */
 .card {
   background: #3f4249;
   border-radius: 16px;
@@ -45,9 +32,6 @@ body {
   width: 100%;
 }
 
-/* =========================
-   HEADINGS
-========================= */
 h1 {
   font-size: 28px;
   margin-bottom: 10px;
@@ -59,9 +43,6 @@ h2 {
   opacity: 0.9;
 }
 
-/* =========================
-   INPUTS
-========================= */
 input {
   width: 100%;
   padding: 12px;
@@ -79,9 +60,6 @@ input:focus {
   box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
 }
 
-/* =========================
-   BUTTONS
-========================= */
 button {
   width: 100%;
   padding: 12px;
@@ -104,9 +82,6 @@ button:active {
   transform: translateY(0px);
 }
 
-/* =========================
-   RESULT BOX
-========================= */
 #result {
   margin-top: 15px;
   padding: 12px;
@@ -116,18 +91,12 @@ button:active {
   line-height: 1.6;
 }
 
-/* =========================
-   CHART
-========================= */
 canvas {
   width: 100% !important;
   height: 320px !important;
   margin-top: 10px;
 }
 
-/* =========================
-   SMALL TEXT / BADGES
-========================= */
 .subtle {
   font-size: 12px;
   opacity: 0.6;

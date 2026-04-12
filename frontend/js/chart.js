@@ -15,10 +15,8 @@ export function renderChart(data) {
 
   const ctx = canvas.getContext("2d");
 
-  // ✅ X-axis = temperature
   const labels = data.map(d => `${d.temp}°F`);
 
-  // Y-axis = pace
   const values = data.map(d => d.pace);
 
   if (chartInstance) chartInstance.destroy();
@@ -26,11 +24,11 @@ export function renderChart(data) {
   chartInstance = new Chart(ctx, {
     type: "line",
     data: {
-      labels: labels,   // 👈 THIS controls x-axis
+      labels: labels,   
       datasets: [
         {
           label: "Pace (sec/km)",
-          data: values,  // 👈 Y-axis values
+          data: values, 
           borderColor: "#38bdf8",
           backgroundColor: "rgba(56,189,248,0.2)",
           pointRadius: 5,
