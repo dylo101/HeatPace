@@ -59,7 +59,7 @@ function formatPace(seconds) {
 
 async function getTemperature(lat, lon) {
   const res = await fetch(
-    `http://localhost:3001/weather?lat=${lat}&lon=${lon}`
+    `https://heatpace.onrender.com/weather?lat=${lat}&lon=${lon}`
   );
 
   const data = await res.json();
@@ -116,7 +116,7 @@ function getTokenFromURL() {
 }
 
 window.connectStrava = function () {
-  window.location.href = "http://localhost:3001/auth";
+  window.location.href = "https://heatpace.onrender.com/auth";
 };
 
 async function getStravaRuns() {
@@ -128,7 +128,7 @@ async function getStravaRuns() {
   }
 
   const res = await fetch(
-    `http://localhost:3001/activities?token=${token}`
+    `https://heatpace.onrender.com/activities?token=${token}`
   );
 
   const activities = await res.json();

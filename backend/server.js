@@ -9,7 +9,7 @@ app.use(express.json());
 // 🔑 YOU WILL FILL THESE
 const CLIENT_ID = "223733";
 const CLIENT_SECRET = "82af787fe26c39d180e331d4425a8a0cfc40f694";
-const REDIRECT_URI = "http://localhost:3001/exchange_token";
+const REDIRECT_URI = "https://heatpace.onrender.com";
 
 app.get("/auth", (req, res) => {
   const url =
