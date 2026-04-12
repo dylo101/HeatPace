@@ -1,6 +1,6 @@
 import { calculateHeatScore, heatLabel } from "./heatScore.js";
 import { renderChart } from "./chart.js";
-
+import { mockRuns } from "./mockRuns.js";
 
 
 const metersPerMile = 1609.34;
@@ -184,7 +184,13 @@ window.calculate = async function () {
   const adjustment = score * 3;
   const newPace = pace + adjustment;
 
-  const runs = await getStravaRuns();
+  let runs;
+
+  if (window.useMockData) {
+    runs = mockRuns;
+  } else {
+    runs = await getStravaRuns();
+  }
 
   console.log("Strava runs received:", runs);
 
@@ -198,3 +204,11 @@ window.calculate = async function () {
 
 
 };
+
+window.useMockData = false;
+
+window.toggleMock = function () {
+  window.useMockData = !window.useMockData;
+  alert(window.useMockData ? "Demo Mode ON" : "Live Strava Mode ON");
+};
+

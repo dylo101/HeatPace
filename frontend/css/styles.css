@@ -143,4 +143,36 @@ canvas {
   
 }
 
+.demo-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  width: 50px;
+  height: 50px;
+
+  border-radius: 50%;
+  border: none;
+
+  background: #1e293b;
+  color: white;
+  font-size: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.demo-toggle:hover {
+  transform: scale(1.1);
+  background: #38bdf8;
+}
+
+
 
