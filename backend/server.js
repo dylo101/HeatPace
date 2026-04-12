@@ -1,13 +1,15 @@
 import express from "express";
 import fetch from "node-fetch";
 import cors from "cors";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const CLIENT_ID = "223733";
-const CLIENT_SECRET = "82af787fe26c39d180e331d4425a8a0cfc40f694";
+const CLIENT_ID = process.env.STRAVA_CLIENT_ID;
+const CLIENT_SECRET = process.env.STRAVA_CLIENT_SECRET;
 const REDIRECT_URI = "https://heatpace.onrender.com/exchange_token";
 
 app.get("/auth", (req, res) => {
@@ -57,7 +59,7 @@ app.get("/activities", async (req, res) => {
   res.json(data);
 });
 
-const WEATHER_KEY = "91ed8ba7c07b4e1c0530723e9ea9cd48";
+const WEATHER_KEY = process.env.WEATHER_KEY;
 
 app.get("/weather", async (req, res) => {
 
