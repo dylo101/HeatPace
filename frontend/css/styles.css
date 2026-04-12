@@ -1,20 +1,146 @@
+/* =========================
+   GLOBAL RESET
+========================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* =========================
+   BODY
+========================= */
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #c67417, #bf1c1c);
+  color: white;
+  min-height: 100vh;
+}
+
+/* =========================
+   LAYOUT
+========================= */
 .container {
   display: flex;
   gap: 20px;
-  justify-content: center;
+  padding: 30px;
   align-items: flex-start;
-  padding: 40px;
 }
 
+/* Stack on mobile */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+  }
+}
+
+/* =========================
+   CARDS
+========================= */
 .card {
-  background: #111a2e;
+  background: #3f4249;
+  border-radius: 16px;
   padding: 20px;
-  border-radius: 12px;
-  width: 350px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  width: 100%;
 }
 
-/* 🔥 IMPORTANT FIX */
+/* =========================
+   HEADINGS
+========================= */
+h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  opacity: 0.9;
+}
+
+/* =========================
+   INPUTS
+========================= */
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: 1px solid #374151;
+  background: #0f172a;
+  color: white;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #c67417;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #c0c0c0;
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0px);
+}
+
+/* =========================
+   RESULT BOX
+========================= */
+#result {
+  margin-top: 15px;
+  padding: 12px;
+  background: #0f172a;
+  border-radius: 12px;
+  border: 1px solid #374151;
+  line-height: 1.6;
+}
+
+/* =========================
+   CHART
+========================= */
 canvas {
   width: 100% !important;
-  height: 250px !important;
+  height: 320px !important;
+  margin-top: 10px;
 }
+
+/* =========================
+   SMALL TEXT / BADGES
+========================= */
+.subtle {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-top: 8px;
+}
+
+.logo {
+  width: 200px;
+  height: auto;
+  display: block;
+  margin-bottom: 20px;
+
+  
+}
+
+

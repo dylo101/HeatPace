@@ -1,8 +1,38 @@
 import { calculateHeatScore, heatLabel } from "./heatScore.js";
 import { renderChart } from "./chart.js";
 
+
+
 const metersPerMile = 1609.34;
 console.log("HeatPace app loaded");
+
+function calculateHeatSensitivity(runs) {
+  const hotRuns = runs.filter(r => r.temp >= 75);
+  const coolRuns = runs.filter(r => r.temp <= 60);
+
+  if (hotRuns.length === 0 || coolRuns.length === 0) {
+    return null;
+  }
+
+  const avgHot =
+    hotRuns.reduce((sum, r) => sum + r.pace, 0) / hotRuns.length;
+
+  const avgCool =
+    coolRuns.reduce((sum, r) => sum + r.pace, 0) / coolRuns.length;
+
+  const diffPer10F = ((avgHot - avgCool) / 15) * 10;
+
+  return diffPer10F; // sec per mile per +10°F
+}
+
+function getRunnerType(sensitivity) {
+  if (sensitivity === null) return "Insufficient Data";
+
+  if (sensitivity < 5) return "Heat Resistant 🟢";
+  if (sensitivity < 15) return "Moderate 🟡";
+  return "Heat Sensitive 🔴";
+}
+
 
 function parsePace(paceStr) {
   // format mm:ss
@@ -44,12 +74,19 @@ async function getTemperature(lat, lon) {
 }
 
 
-function updateUI(temp, pace, score, insight) {
+function updateUI(temp, pace, score, insight, sensitivity) {
   document.getElementById("result").innerHTML = `
     <b>Heat Score:</b> ${score}/10<br/>
     <b>Condition:</b> ${heatLabel(score)}<br/>
     <b>Predicted Pace:</b> ${formatPace(pace)} /mile<br/><br/>
-    <b>Insight:</b> ${insight}
+    <b>Insight:</b> ${insight}<br/>
+    <b>Heat Sensitivity:</b> ${
+        sensitivity !== null
+          ? `+${Math.round(sensitivity)} sec/mile per +10°F`
+          : "Not enough data"
+    }<br/>
+    
+    <b>Runner Type:</b> ${getRunnerType(sensitivity)}
   `;
 }
 
@@ -130,8 +167,6 @@ async function getStravaRuns() {
 
 
 
-
-
 window.calculate = async function () {
   console.log("calculate clicked");
 
@@ -155,7 +190,9 @@ window.calculate = async function () {
 
   const insight = getInsight(runs);
 
-  updateUI(temp, newPace, score, insight);
+  const sensitivity = calculateHeatSensitivity(runs);
+
+  updateUI(temp, newPace, score, insight, sensitivity);
 
   renderChart(runs);
 

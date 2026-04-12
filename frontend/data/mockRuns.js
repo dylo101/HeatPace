@@ -1,8 +1,18 @@
-export const runs = [
-  { date: "2026-04-01", temp: 50, pace: 318 },
-  { date: "2026-04-03", temp: 60, pace: 325 },
-  { date: "2026-04-05", temp: 67, pace: 332 },
-  { date: "2026-04-07", temp: 74, pace: 348 },
-  { date: "2026-04-09", temp: 81, pace: 365 },
-  { date: "2026-04-10", temp: 120, pace: 392 }
+export const mockRuns = [
+  // COOL WEATHER (fast pace)
+  { pace: 420, temp: 52 }, // 7:00 /mile
+  { pace: 430, temp: 55 }, // 7:10
+  { pace: 440, temp: 58 }, // 7:20
+  { pace: 445, temp: 60 }, // 7:25
+
+  // MODERATE
+  { pace: 470, temp: 68 }, // 7:50
+  { pace: 480, temp: 70 }, // 8:00
+  { pace: 495, temp: 72 }, // 8:15
+
+  // HOT WEATHER (slower pace)
+  { pace: 530, temp: 78 }, // 8:50
+  { pace: 550, temp: 82 }, // 9:10
+  { pace: 570, temp: 85 }, // 9:30
+  { pace: 600, temp: 90 }, // 10:00
 ];
