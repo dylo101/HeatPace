@@ -1,16 +1,58 @@
 import { calculateHeatScore, heatLabel } from "./heatScore.js";
 import { renderChart } from "./chart.js";
 
+const metersPerMile = 1609.34;
 console.log("HeatPace app loaded");
+
+function parsePace(paceStr) {
+  // format mm:ss
+  if (paceStr.includes(":")) {
+    const parts = paceStr.split(":");
+    const min = parseInt(parts[0]);
+    const sec = parseInt(parts[1]);
+
+    return min * 60 + sec;
+  }
+
+  // fallback if user enters decimal like 8.5
+  return parseFloat(paceStr) * 60;
+}
+
+function formatPace(seconds) {
+  const min = Math.floor(seconds / 60);
+  const sec = Math.round(seconds % 60)
+    .toString()
+    .padStart(2, "0");
+
+  return `${min}:${sec}`;
+}
+
+async function getTemperature(lat, lon) {
+  const res = await fetch(
+    `http://localhost:3001/weather?lat=${lat}&lon=${lon}`
+  );
+
+  const data = await res.json();
+
+  console.log("Weather response:", data);
+
+  if (!data.main || !data.main.temp) {
+    return 70; // safe fallback
+  }
+
+  return data.main.temp;
+}
+
 
 function updateUI(temp, pace, score, insight) {
   document.getElementById("result").innerHTML = `
     <b>Heat Score:</b> ${score}/10<br/>
     <b>Condition:</b> ${heatLabel(score)}<br/>
-    <b>Predicted Pace:</b> ${pace} sec/km<br/><br/>
+    <b>Predicted Pace:</b> ${formatPace(pace)} /mile<br/><br/>
     <b>Insight:</b> ${insight}
   `;
 }
+
 
 function getInsight(runs) {
   const hotRuns = runs.filter(r => r.temp > 75);
@@ -28,7 +70,7 @@ function getInsight(runs) {
 
   const diff = avgHot - avgCold;
 
-  return `You slow down ~${Math.round(diff)} sec/km in heat`;
+  return `You slow down ~${Math.round(diff)} sec/mile in heat`;
 }
 
 function getTokenFromURL() {
@@ -57,24 +99,44 @@ async function getStravaRuns() {
   console.log("Raw Strava activities:", activities);
 
   // Convert Strava activities → your run format
-  const runs = activities
-    .filter(a => a.type === "Run")
-    .map(a => {
-      const pace = a.moving_time / (a.distance / 1000);
+  
+  const runs = [];
 
-      return {
-        pace: pace,
-        temp: 70 // placeholder until we add weather API
-      };
+  for (const a of activities) {
+
+    if (a.type !== "Run") continue;
+
+    const metersPerMile = 1609.34;
+
+    const pace =
+      a.moving_time / (a.distance / metersPerMile);
+
+    const lat = a.start_latlng?.[0];
+    const lon = a.start_latlng?.[1];
+
+    if (!lat || !lon) continue;
+
+    const temp = Math.round((await getTemperature(lat, lon)) / 2) * 2;
+
+
+    runs.push({
+      pace: pace,
+      temp: temp
     });
+  }
 
   return runs;
 }
 
+
+
+
+
 window.calculate = async function () {
   console.log("calculate clicked");
 
-  let pace = parseFloat(document.getElementById("pace").value);
+  let paceInput = document.getElementById("pace").value;
+  let pace = parsePace(paceInput);
   let temp = parseFloat(document.getElementById("temp").value);
 
   if (isNaN(pace) || isNaN(temp)) {
@@ -96,4 +158,6 @@ window.calculate = async function () {
   updateUI(temp, newPace, score, insight);
 
   renderChart(runs);
+
+
 };

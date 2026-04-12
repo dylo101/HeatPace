@@ -58,6 +58,27 @@ app.get("/activities", async (req, res) => {
   res.json(data);
 });
 
+const WEATHER_KEY = "91ed8ba7c07b4e1c0530723e9ea9cd48";
+
+app.get("/weather", async (req, res) => {
+
+  const lat = req.query.lat;
+  const lon = req.query.lon;
+
+  const url =
+    `https://api.openweathermap.org/data/2.5/weather` +
+    `?lat=${lat}` +
+    `&lon=${lon}` +
+    `&units=imperial` +
+    `&appid=${WEATHER_KEY}`;
+
+  const response = await fetch(url);
+  const data = await response.json();
+
+  res.json(data);
+});
+
+
 app.listen(3001, () => {
   console.log("Backend running on http://localhost:3001");
 });
