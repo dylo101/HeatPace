@@ -1,36 +1,67 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>HeatPace</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Plan your next run with an explained heat-adjusted pace and insights from your Strava history.">
+  <meta name="theme-color" content="#f5f3ed">
+  <title>HeatPace — Same effort. Smarter pace.</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="css/styles.css">
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="js/app.js"></script>
 </head>
-
 <body>
+  <a class="skip-link" href="#planner">Skip to run planner</a>
+  <header class="site-header">
+    <a href="./" class="brand" aria-label="HeatPace home"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M10 28c-9-9 8-13 0-22M18 30c-9-9 8-13 0-22M26 28c-9-9 8-13 0-22"/></svg><span>Heat<span class="brand-light">Pace</span><span class="brand-dot">.</span></span></a>
+    <nav aria-label="Main navigation"><a href="#how-it-works" class="nav-link">How it works</a><button id="demo-button" class="button button-quiet" type="button">Try demo <span aria-hidden="true">↗</span></button><button id="connect-button" class="button button-dark" type="button">Connect Strava <span aria-hidden="true">↗</span></button></nav>
+  </header>
+  <main>
+    <noscript><p class="notice">Enable JavaScript to use the pace calculator and interactive demo.</p></noscript>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy"><p class="eyebrow"><span class="tiny-sun" aria-hidden="true">✳</span> MADE FOR THE MILES AHEAD</p><h1 id="hero-title">Same effort.<br><span>Smarter pace.</span></h1><p class="hero-description">The weather changes. Your effort doesn’t have to.<br class="desktop-break"> Find a starting pace for the conditions, then run by feel.</p></div>
+      <div class="hero-art" aria-hidden="true"><svg viewBox="0 0 380 230"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#d9d8cf"/></pattern></defs><rect width="380" height="230" fill="url(#dots)"/><circle cx="285" cy="72" r="38" fill="#f5c754"/><g stroke="#e9aa2c" stroke-width="2"><path d="M285 18v-8m0 124v-8m54-54h8m-124 0h8m92-38 6-6m-82 88-6 6m82-12 6 6m-82-88-6-6"/></g><path d="M-15 190C90 105 104 227 193 170s103-93 198-50" fill="none" stroke="#dddcd2" stroke-width="32"/><path d="M-15 190C90 105 104 227 193 170s103-93 198-50" fill="none" stroke="#faf9f5" stroke-width="20"/><path d="M-15 190C90 105 104 227 193 170s103-93 198-50" fill="none" stroke="#c5c4b8" stroke-width="1.5" stroke-dasharray="6 8"/><circle cx="190" cy="172" r="19" fill="#ee663d"/><path d="m182 174 8-6 2-9m-2 9 9 5m-9-5-1 8-7 8m7-8 8 6" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"/><circle cx="194" cy="156" r="3" fill="white"/></svg><span class="route-label">A little slower. Just as far.</span></div>
+    </section>
 
-  <div class="container">
-    <div class="card">
-      <img src="./assets/logo.jpg" alt="HeatPace" class="logo" />
+    <div id="notice" class="notice" role="status" hidden></div>
+    <div class="workspace-heading"><p class="eyebrow">YOUR RUN, RECONSIDERED</p><span id="source-status" class="source-status"><span class="status-dot"></span> Baseline estimate</span></div>
+    <section class="planner-grid" id="planner" aria-label="Run planner">
+      <form id="pace-form" class="panel planner-panel" novalidate>
+        <div class="panel-heading"><span class="step-number">01</span><h2>Set your starting point</h2></div>
+        <p class="muted form-intro">The pace you’d run on a mild day.</p>
+        <label for="pace">Planned pace</label>
+        <div class="input-combo"><input id="pace" name="pace" value="8:00" placeholder="8:00" inputmode="decimal" autocomplete="off" aria-describedby="pace-help form-error" required><select id="pace-unit" aria-label="Pace unit"><option value="mi">min / mi</option><option value="km">min / km</option></select></div>
+        <p id="pace-help" class="field-help">Minutes:seconds · for an easy, steady run</p>
+        <div class="weather-inputs"><div><label for="temp">Temperature</label><div class="input-combo"><input id="temp" name="temperature" type="number" value="80" step="0.1" inputmode="decimal" required aria-describedby="form-error"><select id="temp-unit" aria-label="Temperature unit"><option value="f">°F</option><option value="c">°C</option></select></div></div><div><label for="humidity">Humidity <span class="optional">optional</span></label><div class="input-combo"><input id="humidity" name="humidity" type="number" min="0" max="100" step="1" placeholder="—" inputmode="decimal" aria-describedby="humidity-help form-error"><span class="input-suffix">%</span></div></div></div>
+        <p id="humidity-help" class="field-help">Humidity adds context to the conditions label.</p>
+        <label class="checkbox-label" for="personal-toggle"><input type="checkbox" id="personal-toggle" disabled><span>Use my observed trend <span class="experimental">Experimental</span></span></label>
+        <p class="field-help personal-help" id="personal-help">Try the demo or connect Strava to explore a personal trend.</p>
+        <p id="form-error" class="form-error" role="alert" hidden></p>
+        <button class="button button-primary calculate-button" type="submit">Adjust my pace <span aria-hidden="true">→</span></button>
+      </form>
+      <section class="result-panel" aria-labelledby="result-title" aria-live="polite" aria-atomic="true">
+        <div class="result-top"><p id="result-title" class="eyebrow">YOUR HEAT-ADJUSTED STARTING PACE</p><span id="condition-badge" class="condition-badge">Hot conditions</span></div>
+        <div class="pace-output"><span id="adjusted-pace">8:30</span><span class="pace-output-unit" id="result-unit">/ mile</span></div>
+        <p class="result-change" id="result-change">+30 sec / mile · 6.3% adjustment</p>
+        <div class="pace-comparison"><div><span>Planned pace</span><strong id="planned-output">8:00 <small>/ mi</small></strong></div><span class="comparison-arrow" aria-hidden="true">→</span><div><span>Starting range</span><strong id="range-output">8:23–8:38 <small>/ mi</small></strong></div></div>
+        <div class="result-bottom"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 7v6l4 2"/></svg><p id="effort-advice">Start gently, choose shade, and let effort guide your pace.</p></div>
+        <p class="estimate-note" id="estimate-note">Baseline planning estimate · not a race prediction</p>
+      </section>
+    </section>
 
-      <input id="pace" placeholder="Pace (mm:ss / mile)" />
-      <input id="temp" placeholder="Temperature (°F)" />
+    <section class="history-grid" aria-label="Run history and heat trend">
+      <div class="panel chart-panel"><div class="chart-header"><div><p class="eyebrow">THE PATTERN IN YOUR MILES</p><h2>Pace meets temperature</h2></div><div class="segmented" role="group" aria-label="Chart filter"><button id="filter-all" class="active" type="button" aria-pressed="true">All runs</button><button id="filter-comparable" type="button" aria-pressed="false">Comparable</button></div></div>
+        <div id="chart-empty" class="chart-empty"><svg viewBox="0 0 110 70" aria-hidden="true"><path d="M8 58h92M14 58V8"/><path d="m23 48 16-12 19 5 16-20 21-8"/><circle cx="39" cy="36" r="4"/><circle cx="74" cy="21" r="4"/></svg><h3>Every run has a story.</h3><p>See how pace and temperature line up across your runs.<br>Connect Strava, or take a look with sample data.</p><button id="empty-demo" class="text-button" type="button">Explore the demo <span aria-hidden="true">→</span></button></div>
+        <div id="chart-wrap" class="chart-wrap" hidden></div>
+        <div class="chart-footer"><div class="legend"><span><i class="legend-dot"></i> Comparable run</span><span><i class="legend-dot other"></i> Other run</span><span id="trend-legend" hidden><i class="legend-line"></i> Observed trend</span></div><p id="chart-detail" class="field-help">Each dot is a run. An association isn’t a cause.</p></div>
+      </div>
+      <aside class="panel insight-panel"><div class="insight-heading"><span class="insight-icon" aria-hidden="true">↗</span><p class="eyebrow">YOUR HEAT TREND</p></div><h2 id="trend-title">Get to know<br>your warm-weather miles.</h2><p id="trend-copy" class="muted">Bring in your run history to explore how your pace changes with temperature at similar heart rates.</p><dl class="trend-stats"><div><dt>Runs with weather</dt><dd id="weather-count">—</dd></div><div><dt>Comparable runs</dt><dd id="comparable-count">—</dd></div><div><dt>Cool / hot runs</dt><dd id="coverage-count">—</dd></div></dl><p id="history-status" class="field-help">Your calculator works without a Strava account.</p><button id="history-action" class="text-button" type="button" hidden>Retry loading runs →</button></aside>
+    </section>
 
-      <button onclick="calculate()">Predict</button>
-      <button onclick="connectStrava()">Connect Strava</button>
-      <button class="demo-toggle" onclick="toggleMock()">D</button>
-      
+    <section class="panel runs-panel" id="runs-panel" hidden aria-labelledby="runs-title"><div class="runs-heading"><div><p class="eyebrow">BEHIND THE DOTS</p><h2 id="runs-title">Recent runs</h2></div><span id="run-summary" class="muted"></span></div><div class="table-scroll"><table><caption class="sr-only">Recent runs, pace, weather at the start hour, and comparison eligibility</caption><thead><tr><th scope="col">Run</th><th scope="col">Distance</th><th scope="col">Pace</th><th scope="col">Weather</th><th scope="col">Comparison</th></tr></thead><tbody id="runs-body"></tbody></table></div><button id="show-runs" class="text-button" type="button">Show all runs ↓</button></section>
 
-      <div id="result">Enter values</div>
-    </div>
-    <div class="card">
-      <h2>My Strava Heat Performance</h2>
-      <canvas id="chart"></canvas>
-    </div>
-
-  </div>
-
-  <script type="module" src="./js/app.js"></script>
-
+    <section id="how-it-works" class="method-section" aria-labelledby="method-title"><div class="method-heading"><p class="eyebrow">A LITTLE CONTEXT GOES A LONG WAY</p><h2 id="method-title">Know what goes into your pace.</h2></div><div class="method-grid"><article><span class="method-number">01 /</span><h3>A transparent starting point</h3><p>The baseline adds 0.25% to your pace for each °F above 55°F, up to 20%. It’s a product heuristic for planning, not a validated physiological model. The range is a planning band, not a confidence interval.</p></article><article><span class="method-number">02 /</span><h3>The weather when you ran</h3><p>Strava runs are matched to estimated hourly weather at their starting location and time. Missing weather stays missing. Recent days use weather-model data; older runs use historical reanalysis.</p></article><article><span class="method-number">03 /</span><h3>History, with perspective</h3><p>Personal trends compare flatter, steady 3–16 km runs at similar heart rates. With enough cool and hot runs, you can opt into a bounded blend of your observed trend and the baseline. It remains an experiment.</p></article></div><details class="method-details"><summary>Comparison rules, estimate limits & privacy <span aria-hidden="true">+</span></summary><div><p>Comparable runs must have heart-rate and weather data, no race or workout tag, no indoor flag, no more than 15 m of ascent per km, and elapsed time within 25% of moving time. Heart rates must be within 10 bpm of the cohort median. Personalization needs 12 comparable runs, including 3 at or below 60°F and 3 at or above 75°F, plus a positive trend with R² ≥ 0.15.</p><p>The observed percentage slope is bounded to 0.1–0.6% per °F and blended with the baseline at a weight of run count / 60, capped at 50%. Humidity changes the conditions label, not the pace calculation. Fitness changes, fatigue, wind, sunshine, terrain, and training intent remain confounders.</p><p>Strava tokens stay on the server in temporary memory. Disconnect clears your local session; you can revoke app access in Strava settings. Run locations, rounded to approximately 1 km, and dates are sent to Open-Meteo to retrieve weather. They aren’t returned to the browser. Sessions are cleared when the server restarts. Strava access includes activities visible to everyone or followers; private activities aren’t requested.</p></div></details></section>
+  </main>
+  <footer><a href="./" class="footer-brand">HeatPace.</a><p>Run the effort. Respect the conditions.</p><span>Weather by <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a> · Powered by Strava</span></footer>
 </body>
 </html>

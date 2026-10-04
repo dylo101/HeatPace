@@ -1,19 +1,8 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "keywords": [],
-  "author": "",
+  "name": "heatpace-backend", "version": "2.0.0", "private": true, "type": "module",
+  "main": "server.js", "description": "HeatPace server and Strava integration",
+  "engines": { "node": ">=22" },
+  "scripts": { "test": "node --test ../tests/*.test.js", "start": "node server.js" },
   "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.1",
-    "express": "^5.2.1",
-    "node-fetch": "^3.3.2"
-  }
+  "dependencies": { "dotenv": "^17.4.1", "express": "^5.2.1" }
 }

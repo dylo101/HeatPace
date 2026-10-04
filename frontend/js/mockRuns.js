@@ -1,18 +1,13 @@
-export const mockRuns = [
-  //COOL WEATHER 
-  { pace: 420, temp: 52 }, // 7:00 /mile
-  { pace: 430, temp: 55 }, // 7:10
-  { pace: 440, temp: 58 }, // 7:20
-  { pace: 445, temp: 60 }, // 7:25
-
-  //MODERATE
-  { pace: 470, temp: 68 }, // 7:50
-  { pace: 480, temp: 70 }, // 8:00
-  { pace: 495, temp: 72 }, // 8:15
-
-  //HOT WEATHER 
-  { pace: 530, temp: 78 }, // 8:50
-  { pace: 550, temp: 82 }, // 9:10
-  { pace: 570, temp: 85 }, // 9:30
-  { pace: 600, temp: 90 }, // 10:00
-];
+// Synthetic sample runs. No real athlete or location data.
+const temperatures = [54, 59, 72, 83, 62, 79, 57, 86, 69, 76, 52, 81, 66, 88, 58, 74, 55, 84, 64, 78, 60, 90, 71, 80];
+export const mockRuns = temperatures.map((temp, index) => {
+  const distance = [6400, 8000, 5000, 10000][index % 4];
+  const pace = 472 + (temp - 55) * 1.9 + [8, -9, 3, -2, 12, -6][index % 6];
+  const movingTime = Math.round(pace * distance / 1609.344);
+  return { id: `demo-${index}`, name: ["Neighborhood loop", "River path", "Morning miles", "Park loop"][index % 4],
+    date: new Date(Date.UTC(2026, 7, 1 + index * 2, 14)).toISOString(), distance,
+    pace, temp, humidity: 45 + index % 7 * 5, movingTime, elapsedTime: movingTime + 35,
+    elevation: index === 19 ? 300 : 22 + index % 5 * 8,
+    heartRate: index === 8 ? null : 142 + index % 5, workoutType: index === 22 ? 3 : 0,
+    trainer: false, weatherSource: "sample", weatherStatus: "available" };
+}).reverse();

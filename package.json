@@ -1,0 +1,6 @@
+{
+  "name": "heatpace", "version": "2.0.0", "private": true, "type": "module",
+  "description": "Weather-aware run planning with Strava history",
+  "engines": { "node": ">=22" },
+  "scripts": { "setup": "npm ci --prefix backend", "start": "node backend/server.js", "dev": "node --watch backend/server.js", "test": "node --test tests/*.test.js" }
+}
