@@ -35,6 +35,17 @@ Installed dependencies in `node_modules` are ignored by Git. The setup command
 reinstalls them using `backend/package-lock.json`. Commit dependency manifests
 and lockfiles when updating packages, rather than committing installed packages.
 
+### Pace inputs and checks
+
+Enter a positive pace as minutes and two-digit seconds, such as `8:00`, or as
+decimal minutes, such as `8.5` (8:30). Seconds must be between 00 and 59.
+Malformed values such as `8:99` or `8.5abc` are rejected before activity loading.
+Displayed paces round to the nearest whole second, carrying into the next minute.
+
+Run `npm test` from the repository root. These checks cover pace parsing,
+rounding, calculator validation, and the demo calculation using stubbed browser
+objects. They require no API credentials and make no external requests.
+
 ## Inspiration
 I love distance running. When it is hot outside, it can take away some of the fun of running because you have to exert yourself more to achieve the same speed. It also increases your heart rate which is bad when you need to have sessions dedicated to increasing your aerobic base and endurance. So, this requires you to adjust your pace and run slower, but it is very difficult to know just how much slower you have to go due to how often the temperature can vary day to day and hour to hour.
 

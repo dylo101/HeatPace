@@ -31,6 +31,7 @@ for its owner to learn Codex, skills, plugins, and development workflows.
 - `frontend/index.html` and `frontend/css/styles.css`: page and styling.
 - `frontend/js/app.js`: form handling, pace prediction, activity loading, and results.
 - `frontend/js/heatScore.js`: temperature score and condition labels.
+- `frontend/js/pace.js`: shared pace parsing and formatting.
 - `frontend/js/chart.js`: Chart.js visualization.
 - `frontend/js/mockRuns.js`: sample runs used by demo mode.
 - `frontend/js/strava.js`: separate sample-data helper, currently unused by `app.js`.
@@ -63,8 +64,11 @@ This check establishes current behavior, not the accuracy of the prediction.
 
 Check behavior relevant to each change and run `git diff --check`. When changing
 startup or dependency installation, verify a fresh install in a temporary copy.
-There is no working automated test suite yet; the backend test script is a
-placeholder. Do not report tests as passing unless they were actually run.
+Run `npm test` from the repository root for pace parsing, formatting, and
+calculator integration checks. These use Node's built-in test runner with
+browser objects stubbed; they do not verify live Strava or full browser behavior.
+The backend's separate test script remains a placeholder. Do not report tests
+as passing unless they were actually run.
 
 ## Current constraints
 
