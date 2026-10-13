@@ -1,6 +1,7 @@
 import { calculateHeatScore, heatLabel } from "./heatScore.js";
 import { renderChart } from "./chart.js";
 import { mockRuns } from "./mockRuns.js";
+import { parsePace, formatPace } from "./pace.js";
 
 
 const metersPerMile = 1609.34;
@@ -33,28 +34,6 @@ function getRunnerType(sensitivity) {
   return "Heat Sensitive 🔴";
 }
 
-
-function parsePace(paceStr) {
-  if (paceStr.includes(":")) {
-    const parts = paceStr.split(":");
-    const min = parseInt(parts[0]);
-    const sec = parseInt(parts[1]);
-
-    return min * 60 + sec;
-  }
-
-  //fallback if user enters decimal like 8.5
-  return parseFloat(paceStr) * 60;
-}
-
-function formatPace(seconds) {
-  const min = Math.floor(seconds / 60);
-  const sec = Math.round(seconds % 60)
-    .toString()
-    .padStart(2, "0");
-
-  return `${min}:${sec}`;
-}
 
 async function getTemperature(lat, lon) {
   const res = await fetch(
@@ -173,7 +152,13 @@ window.calculate = async function () {
   let pace = parsePace(paceInput);
   let temp = parseFloat(document.getElementById("temp").value);
 
-  if (isNaN(pace) || isNaN(temp)) {
+  if (!Number.isFinite(pace)) {
+    document.getElementById("result").textContent =
+      "⚠️ Enter a positive pace as minutes:seconds (8:00) or decimal minutes (8.5). Seconds must be 00–59.";
+    return;
+  }
+
+  if (!Number.isFinite(temp)) {
     document.getElementById("result").innerHTML =
       "⚠️ Please enter valid numbers";
     return;
