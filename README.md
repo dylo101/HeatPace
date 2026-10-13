@@ -31,10 +31,9 @@ Render backend, and its OAuth redirects point to the deployed app. Starting
 this local server does not move that live flow to localhost. Local Strava
 configuration will be handled in a separate change.
 
-The repository currently tracks `backend/node_modules`. The setup command
-reinstalls dependencies using `backend/package-lock.json` and may show changes
-to those tracked files. Removing installed dependencies from Git is a separate
-cleanup task.
+Installed dependencies in `node_modules` are ignored by Git. The setup command
+reinstalls them using `backend/package-lock.json`. Commit dependency manifests
+and lockfiles when updating packages, rather than committing installed packages.
 
 ## Inspiration
 I love distance running. When it is hot outside, it can take away some of the fun of running because you have to exert yourself more to achieve the same speed. It also increases your heart rate which is bad when you need to have sessions dedicated to increasing your aerobic base and endurance. So, this requires you to adjust your pace and run slower, but it is very difficult to know just how much slower you have to go due to how often the temperature can vary day to day and hour to hour.
