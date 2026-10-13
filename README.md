@@ -1,6 +1,41 @@
 # HeatPace
 HeatPace connects to Strava and shows how weather affects your running performance so you can adjust your pacing on hot days.
 
+## Run locally
+
+Requires Node.js 18 or newer and npm. From the repository root:
+
+```sh
+npm run setup
+npm start
+```
+
+Open **http://localhost:3001**. The Express server serves both the frontend and
+backend, so a separate frontend server is not needed. Stop it with **Ctrl+C**.
+If you set the `PORT` environment variable, use that port instead of 3001.
+
+### Try the demo without API keys
+
+1. Click the **D** button in the bottom-right corner to enable demo mode.
+2. Dismiss the **Demo Mode ON** notification.
+3. Enter **8:00** for pace and **80** for temperature, then click **Predict**.
+4. Confirm the predicted pace is **8:27 /mile** and the chart shows sample runs.
+
+Click **D** again to switch back to live mode. Demo mode resets when the page
+reloads. The chart loads Chart.js from a CDN, so it requires internet access.
+
+### Current local-development limits
+
+The frontend's live Strava and weather requests still point to the deployed
+Render backend, and its OAuth redirects point to the deployed app. Starting
+this local server does not move that live flow to localhost. Local Strava
+configuration will be handled in a separate change.
+
+The repository currently tracks `backend/node_modules`. The setup command
+reinstalls dependencies using `backend/package-lock.json` and may show changes
+to those tracked files. Removing installed dependencies from Git is a separate
+cleanup task.
+
 ## Inspiration
 I love distance running. When it is hot outside, it can take away some of the fun of running because you have to exert yourself more to achieve the same speed. It also increases your heart rate which is bad when you need to have sessions dedicated to increasing your aerobic base and endurance. So, this requires you to adjust your pace and run slower, but it is very difficult to know just how much slower you have to go due to how often the temperature can vary day to day and hour to hour.
 

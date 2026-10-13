@@ -1,0 +1,11 @@
+{
+  "name": "heatpace",
+  "private": true,
+  "scripts": {
+    "setup": "npm ci --prefix backend",
+    "start": "npm start --prefix backend"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

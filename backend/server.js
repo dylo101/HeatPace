@@ -2,11 +2,13 @@ import express from "express";
 import fetch from "node-fetch";
 import cors from "cors";
 import dotenv from "dotenv";
+import { fileURLToPath } from "node:url";
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static(fileURLToPath(new URL("../frontend/", import.meta.url))));
 
 const CLIENT_ID = process.env.STRAVA_CLIENT_ID;
 const CLIENT_SECRET = process.env.STRAVA_CLIENT_SECRET;
