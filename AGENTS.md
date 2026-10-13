@@ -74,11 +74,10 @@ placeholder. Do not report tests as passing unless they were actually run.
   location. Do not describe that data as historical weather.
 - The pace prediction uses a heat-score adjustment; run history affects insights
   and classification rather than the predicted pace.
-- `backend/node_modules` is tracked in Git. Setup may modify those tracked files;
-  removing them from tracking belongs in a focused dependency cleanup.
-- The existing lockfile has reported dependency vulnerabilities. Recheck with
-  `npm audit --prefix backend` during dependency work rather than relying on
-  an old count. Inspect proposed fixes before applying broad upgrades.
+- Keep installed `node_modules` out of Git. Record dependency changes in package
+  manifests and lockfiles, and verify they install reproducibly.
+- Run `npm audit --prefix backend` during dependency work rather than relying on
+  an old result. Inspect proposed fixes before applying broad upgrades.
 - Keep credentials out of source, documentation, screenshots, and logs. Do not
   copy authorization codes or access tokens from URLs into project artifacts.
 
